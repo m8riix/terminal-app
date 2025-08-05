@@ -117,6 +117,7 @@ function displayMovie(movie) {
             <div><span class="label">Director:</span> .... ${movie.Director}</div>
             <div><span class="label">Writer:</span> ...... ${movie.Writer}</div>
             <div><span class="label">Stars:</span> ....... ${movie.Actors}</div>
+            <div><span class="label">ImdbID:</span> ....... ${movie.imdbID}</div>
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
         </div>
