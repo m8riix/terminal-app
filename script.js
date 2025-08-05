@@ -54,7 +54,7 @@ function showHelp() {
         <div class="help">
             <div>Available commands:</div>
             <div><span class="help-command">movie name</span> - Search for a movie</div>
-            <div><span class="help-command">help</span> - Show this help message, Reach out to me on instagram @za1n.2c for any other help</div>
+            <div><span class="help-command">help</span> - Show this help message, Reach out to me on instagram za1n.2c for any other issues</div>
             <div><span class="help-command">clear</span> - Clear the terminal</div>
             <div><span class="help-command">↑/↓</span> - Navigate command history</div>
         </div>
@@ -146,7 +146,7 @@ function displayMovie(movie, tmdbData = null) {
     const movieHtml = `
         <div class="movie-info">
             <div class="movie-title">${movie.Title}</div> (${movie.Year}) on IMDb:
-            <div><span class="rating">⭐ ${movie.imdbRating}</span>${tmdbData ? ` | <span class="rating">🎬 ${tmdbData.vote_average.toFixed(1)}/10 (TMDB)</span>` : ''}</div>
+            <div><span class="rating">⭐ ${movie.imdbRating}/10 (IMDB)</span>${tmdbData ? ` | <span class="rating">🎬 ${tmdbData.vote_average.toFixed(1)}/10 (TMDB)</span>` : ''}</div>
             <div><span class="label">Duration:</span> .... ${runtime}</div>
             <div><span class="label">Director:</span> .... ${movie.Director}</div>
             <div><span class="label">Writer:</span> ...... ${movie.Writer}</div>
@@ -156,9 +156,8 @@ function displayMovie(movie, tmdbData = null) {
             ${tmdbData ? `<div><span class="label">TMDB Title:</span> ... ${tmdbData.title}</div>` : ''}
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
-            ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
-            ${watchLink2 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink2}" target="_blank" class="watch-link">🎬 Server 2 (ad-free)</a></div>` : ''}
-            ${watchLink1 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink1}" target="_blank" class="watch-link">🎬 Server 1 (ad-free)</a></div>` : ''}
+            ${watchLink2 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink2}" target="_blank" class="watch-link">🎬 Server 1 (ad-free)</a></div>` : ''}
+            ${watchLink1 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink1}" target="_blank" class="watch-link">🎬 Server 2 (ad-free)</a></div>` : ''}
         </div>
     `;
     
