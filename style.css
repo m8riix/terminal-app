@@ -2,46 +2,170 @@ $color1: #000;
 $color2: #fff;
 
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html,
 body {
-    padding: 0;
-    margin: 0;
-    background: $color1;
-    color: $color2;
-    font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
-    font-size: 16px;
-    line-height: 1.5;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#terminal {
-    width: 80%;
-    height: 80%;
-    background: $color1;
-    border: 1px solid $color2;
-    padding: 10px;
-    overflow: auto;
+	padding: 0;
+	margin: 0;
+	background: $color1;
+	color: $color2;
+	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+	font-size: 16px;
+	line-height: 1.5;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 18.5714px;
+	height: 100vh;
 }
 
 #output {
-    white-space: pre-wrap;
-    word-wrap: break-word;
+	position: relative;
+	height: calc(100vh - 50px);
+	padding: 10px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	white-space: pre-wrap;
+	overflow-x: auto;
+    &.rotate {
+      transform: rotateX(180deg) !important;
+    }
+	.container {
+		display: flex;
+		@media(max-width: 925px) {
+			flex-flow: row wrap;
+		}
+		.box-text {
+			width: auto;
+			padding-right: 10%;
+			order: 2;
+			@media(max-width: 925px) {
+				width: 100%;
+				order: 1;
+			}
+		}
+		.box-image {
+			width: auto;
+			padding-right: 10%;
+			order: 1;
+			@media(max-width: 925px) {
+				width: 100%;
+				order: 2;
+			}
+		}
+	}
+
+	.ascii {
+		font-size: 1rem;
+		@media(max-width : 980px) {
+			font-size: 0.7rem;
+			line-height: 1.2;
+		}
+		@media(max-width : 675px) {
+			font-size: 0.5rem;
+			line-height: 1;
+		}
+		@media(max-width : 475px) {
+			font-size: 0.3rem;
+			line-height: 1;
+		}
+	}
+	.ascii-small {
+		font-size: 0.5rem;
+		line-height: 1.2;
+		@media(max-width : 475px) {
+			font-size: 0.3rem;
+			line-height: 1;
+		}
+	}
+	h1 {
+		line-height: 1.5;
+	}
+	li {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+	a {
+		text-decoration: underline;
+		color: $color2;
+		font-weight: bold;
+		&:hover {
+			color: yellow;
+		}
+	}
+	hr {
+		border: 0;
+		border-top: 2px dashed $color2;
+	}
+	table {
+		border-collapse: collapse;
+		border: 2px dashed $color2;
+		tr {
+			border: 1px dashed $color2;
+			th {
+				color: yellow;
+				font-weight: bold;
+				text-align: left;
+				padding: 15px;
+				border: 2px dashed $color2;
+			}
+			td {
+				min-width: 250px;
+				border: 2px dashed $color2;
+				padding: 15px;
+				&.id {
+					min-width: auto;
+				}
+			}
+		}
+	}
+	.highlight {
+		color: yellow;
+	}
+	.error {
+		color: red;
+	}
+	.success {
+		color: cyan;
+	}
 }
 
-.termino-input {
-    background: transparent;
-    border: none;
-    color: $color2;
-    font: inherit;
-    width: 100%;
-    outline: none;
+#terminal {
+	height: 50px;
+	width: 100vw;
+	position: relative;
+	input {
+		background: lighten($color1, 10%);
+		color: $color2;
+		display: block;
+		font-family: Consolas, monaco, monospace;
+		font-size: 14px;
+		font-style: normal;
+		font-variant: normal;
+		font-weight: 400;
+		line-height: 18.5714px;
+		padding: 10px 30px;
+		border: 0;
+		height: 100%;
+		width: 100%;
+		&:focus {
+			outline: none;
+		}
+	}
+	&::before {
+		position: absolute;
+		display: block;
+	//	content: ">";
+		color: $color2;
+		left: 10px;
+		top: 20px;
+		z-index: 2;
+	}
+}
+
+pre{
+  white-space: pre-line;
 }
