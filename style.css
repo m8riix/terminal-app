@@ -140,6 +140,23 @@ input {
     text-decoration: underline;
 }
 
+.watch-link {
+    color: #00ff00;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: rgba(0, 255, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.watch-link:hover {
+    color: #00ff00;
+    background-color: rgba(0, 255, 0, 0.2);
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
 .poster-info, .backdrop-info {
     margin-top: 5px;
 }
