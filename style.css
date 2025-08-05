@@ -130,6 +130,20 @@ input {
     color: #ffd700;
 }
 
+.tmdb-link {
+    color: #ff6b6b;
+    text-decoration: none;
+}
+
+.tmdb-link:hover {
+    color: #ff8e8e;
+    text-decoration: underline;
+}
+
+.poster-info, .backdrop-info {
+    margin-top: 5px;
+}
+
 ::selection {
     background-color: #33ff33;
     color: #000;
