@@ -1,0 +1,47 @@
+$color1: #000;
+$color2: #fff;
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    background: $color1;
+    color: $color2;
+    font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#terminal {
+    width: 80%;
+    height: 80%;
+    background: $color1;
+    border: 1px solid $color2;
+    padding: 10px;
+    overflow: auto;
+}
+
+#output {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.termino-input {
+    background: transparent;
+    border: none;
+    color: $color2;
+    font: inherit;
+    width: 100%;
+    outline: none;
+}
