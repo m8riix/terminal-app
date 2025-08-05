@@ -134,15 +134,12 @@ function displayMovie(movie, tmdbData = null) {
         }
     }
     
-    // Get TMDB poster URL if available
-    const posterUrl = tmdbData && tmdbData.poster_path 
-        ? `https://image.tmdb.org/t/images/w500${tmdbData.poster_path}`
-        : null;
-    
-    // Get TMDB backdrop URL if available
-    const backdropUrl = tmdbData && tmdbData.backdrop_path 
-        ? `https://image.tmdb.org/t/images/w1280${tmdbData.backdrop_path}`
-        : null;
+    // Generate watch link if TMDB data is available
+    let watchLink = null;
+    if (tmdbData && tmdbData.id && tmdbData.title) {
+        const formattedTitle = tmdbData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        watchLink = `https://pstream.mov/media/tmdb-movie-${tmdbData.id}-${formattedTitle}`;
+    }
     
     const movieHtml = `
         <div class="movie-info">
@@ -154,8 +151,9 @@ function displayMovie(movie, tmdbData = null) {
             <div><span class="label">Stars:</span> ....... ${movie.Actors}</div>
             <div><span class="label">ImdbID:</span> ....... ${movie.imdbID}</div>
             ${tmdbData ? `<div><span class="label">TMDB ID:</span> ...... ${tmdbData.id}</div>` : ''}
-            ${tmdbData ? `<div><span class="label">TMDB Title:</span> ...... ${tmdbData.title}</div>` : ''}
+            ${tmdbData ? `<div><span class="label">TMDB Title:</span> ... ${tmdbData.title}</div>` : ''}
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
+            ${watchLink ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink}" target="_blank" class="watch-link">🎬 Watch Now</a></div>` : ''}
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
         </div>
     `;
