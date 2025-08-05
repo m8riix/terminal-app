@@ -1,4 +1,5 @@
 const OMDB_API_KEY = 'fd161998';
+const TMDB_API_KEY = 'bf99b4e624a319715068fad2ea7e4886';
 const output = document.getElementById('output');
 const input = document.getElementById('input');
 let commandHistory = [];
@@ -73,7 +74,7 @@ async function searchMovie(query) {
     // Show loading message
     const loadingMsg = document.createElement('div');
     loadingMsg.className = 'loading';
-    loadingMsg.textContent = 'Searching...';
+    loadingMsg.textContent = 'Searching OMDB...';
     output.appendChild(loadingMsg);
     
     try {
@@ -81,12 +82,21 @@ async function searchMovie(query) {
         const response = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(query)}&type=movie&apikey=${OMDB_API_KEY}`);
         const data = await response.json();
         
-        // Remove loading message
-        loadingMsg.remove();
-        
         if (data.Response === 'True') {
-            displayMovie(data);
+            // Update loading message for TMDB
+            loadingMsg.textContent = 'Fetching TMDB data...';
+            
+            // Fetch TMDB data using IMDB ID
+            const tmdbData = await fetchTMDBData(data.imdbID);
+            
+            // Remove loading message
+            loadingMsg.remove();
+            
+            // Display combined movie data
+            displayMovie(data, tmdbData);
         } else {
+            // Remove loading message
+            loadingMsg.remove();
             output.innerHTML += '<div class="error">No movies found. Try another search.</div>';
         }
     } catch (error) {
@@ -99,7 +109,22 @@ async function searchMovie(query) {
     }
 }
 
-function displayMovie(movie) {
+async function fetchTMDBData(imdbID) {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/find/${imdbID}?api_key=${TMDB_API_KEY}&external_source=imdb_id`);
+        const data = await response.json();
+        
+        if (data.movie_results && data.movie_results.length > 0) {
+            return data.movie_results[0];
+        }
+        return null;
+    } catch (error) {
+        console.error('TMDB API Error:', error);
+        return null;
+    }
+}
+
+function displayMovie(movie, tmdbData = null) {
     // Format runtime
     let runtime = movie.Runtime;
     if (runtime && runtime !== 'N/A') {
@@ -109,15 +134,26 @@ function displayMovie(movie) {
         }
     }
     
+    // Get TMDB poster URL if available
+    const posterUrl = tmdbData && tmdbData.poster_path 
+        ? `https://image.tmdb.org/t/images/w500${tmdbData.poster_path}`
+        : null;
+    
+    // Get TMDB backdrop URL if available
+    const backdropUrl = tmdbData && tmdbData.backdrop_path 
+        ? `https://image.tmdb.org/t/images/w1280${tmdbData.backdrop_path}`
+        : null;
+    
     const movieHtml = `
         <div class="movie-info">
             <div class="movie-title">${movie.Title}</div> (${movie.Year}) on IMDb:
-            <div><span class="rating">⭐ ${movie.imdbRating}</span></div>
+            <div><span class="rating">⭐ ${movie.imdbRating}</span>${tmdbData ? ` | <span class="rating">🎬 ${tmdbData.vote_average.toFixed(1)}/10 (TMDB)</span>` : ''}</div>
             <div><span class="label">Duration:</span> .... ${runtime}</div>
             <div><span class="label">Director:</span> .... ${movie.Director}</div>
             <div><span class="label">Writer:</span> ...... ${movie.Writer}</div>
             <div><span class="label">Stars:</span> ....... ${movie.Actors}</div>
             <div><span class="label">ImdbID:</span> ....... ${movie.imdbID}</div>
+            ${tmdbData ? `<div><span class="label">TMDB ID:</span> ...... ${tmdbData.id}</div>` : ''}
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
         </div>
