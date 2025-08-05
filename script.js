@@ -54,7 +54,7 @@ function showHelp() {
         <div class="help">
             <div>Available commands:</div>
             <div><span class="help-command">movie name</span> - Search for a movie</div>
-            <div><span class="help-command">help</span> - Show this help message</div>
+            <div><span class="help-command">help</span> - Show this help message, Reach out to me on instagram @za1n.2c for any other help</div>
             <div><span class="help-command">clear</span> - Clear the terminal</div>
             <div><span class="help-command">↑/↓</span> - Navigate command history</div>
         </div>
@@ -74,7 +74,7 @@ async function searchMovie(query) {
     // Show loading message
     const loadingMsg = document.createElement('div');
     loadingMsg.className = 'loading';
-    loadingMsg.textContent = 'Searching OMDB...';
+    loadingMsg.textContent = 'Searching Movie Database...';
     output.appendChild(loadingMsg);
     
     try {
