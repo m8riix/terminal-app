@@ -135,10 +135,12 @@ function displayMovie(movie, tmdbData = null) {
     }
     
     // Generate watch link if TMDB data is available
-    let watchLink = null;
+    let watchLink1 = null;
+    let watchLink2 = null;
     if (tmdbData && tmdbData.id && tmdbData.title) {
         const formattedTitle = tmdbData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-        watchLink = `https://pstream.mov/media/tmdb-movie-${tmdbData.id}-${formattedTitle}`;
+        watchLink1 = `https://pstream.mov/media/tmdb-movie-${tmdbData.id}-${formattedTitle}`;
+        watchLink2 = `https://www.vlop.fun/watch/${tmdbData.id}`;
     }
     
     const movieHtml = `
@@ -153,8 +155,10 @@ function displayMovie(movie, tmdbData = null) {
             ${tmdbData ? `<div><span class="label">TMDB ID:</span> ...... ${tmdbData.id}</div>` : ''}
             ${tmdbData ? `<div><span class="label">TMDB Title:</span> ... ${tmdbData.title}</div>` : ''}
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
-            ${watchLink ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink}" target="_blank" class="watch-link">🎬 Watch Now</a></div>` : ''}
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
+            ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
+            ${watchLink2 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink2}" target="_blank" class="watch-link">🎬 Server 2 (ad-free)</a></div>` : ''}
+            ${watchLink1 ? `<div><span class="label">Watch Now:</span> .... <a href="${watchLink1}" target="_blank" class="watch-link">🎬 Server 1 (ad-free)</a></div>` : ''}
         </div>
     `;
     
