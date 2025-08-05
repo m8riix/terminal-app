@@ -154,6 +154,7 @@ function displayMovie(movie, tmdbData = null) {
             <div><span class="label">Stars:</span> ....... ${movie.Actors}</div>
             <div><span class="label">ImdbID:</span> ....... ${movie.imdbID}</div>
             ${tmdbData ? `<div><span class="label">TMDB ID:</span> ...... ${tmdbData.id}</div>` : ''}
+            ${tmdbData ? `<div><span class="label">TMDB Title:</span> ...... ${tmdbData.title}</div>` : ''}
             <div><span class="label">Genre:</span> ....... <span class="genre">${movie.Genre}</span></div>
             ${movie.Plot !== 'N/A' ? `<div class="plot">Plot: ${movie.Plot}</div>` : ''}
         </div>
