@@ -1,19 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Termino.js@latest/dist/termino.min.js"></script>
-<script src="https://cdn.skypack.dev/ansi_up@5.1.0"></script>
-<script src="https://cdn.skypack.dev/@nightmarebot/chalk"></script>
-    <title>Movie Terminal UI</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Terminal UI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Termino.js@latest/dist/termino.min.js"></script>
+  <script src="https://cdn.skypack.dev/ansi_up@5.1.0"></script>
+  <script src="https://cdn.skypack.dev/@nightmarebot/chalk"></script>
 </head>
 <body>
-    <div id="terminal">
-        <div class="termino-console" id="output"></div>
-        <input id="input-field" type="text" class="termino-input" value="" autofocus="true" placeholder="Type here..." autocomplete="off"/>
-    </div>
-    <script src="script.js" type="module"></script>
+  <div id="terminal">
+    <div class="termino-console" id="output"></div>
+    <input id="input-field" type="text" class="termino-input" value="" autofocus="true" placeholder="Type here..." autocomplete="off"/>
+  </div>
+  <script>
+    // Wait until the DOM and all scripts are loaded
+    window.addEventListener('DOMContentLoaded', () => {
+      const Termino = window.Termino;
+      const ansi_up = new window.ansi_up();
+      const chalk = window.nightmarebotChalk;
+
+      let term = Termino(document.getElementById("terminal"));
+
+      async function getData(input) {
+        const apiKey = 'bf99b4e624a319715068fad2ea7e4886';
+        const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(input)}&page=1`;
+        const searchResponse = await fetch(searchUrl);
+        const searchData = await searchResponse.json();
+
+        if (!searchData.results || searchData.total_results === 0) {
+          throw { message: "Nothing Found" };
+        }
+
+        const movieId = searchData.results[0].id;
+        const detailsUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`;
+        const detailsResponse = await fetch(detailsUrl);
+        const result = await detailsResponse.json();
+
+        const formatRuntime = (minutes) => {
+          if (!minutes) return 'N/A';
+          const hours = Math.floor(minutes / 60);
+          const mins = minutes % 60;
+          return `${hours}h${mins}min`;
+        };
+
+        const movieRes = `
+${chalk.black.bgYellow.bold(result.original_title)} (${result.release_date ? result.release_date.slice(0, 4) : 'N/A'}) on TMDb:
+${chalk.yellow(`☆ ${result.vote_average.toFixed(1)}`)} (based on ${result.vote_count} votes)
+
+Overview: ${result.overview || 'N/A'}
+Runtime: ${formatRuntime(result.runtime)}
+Genres: ${result.genres ? result.genres.map(g => g.name).join(', ') : 'N/A'}
+Popularity: ${result.popularity ? result.popularity.toFixed(1) : 'N/A'}
+`;
+
+        return ansi_up.ansi_to_html(movieRes);
+      }
+
+      const inputField = document.getElementById('input-field');
+      inputField.addEventListener('keydown', async (event) => {
+        if (event.key === 'Enter') {
+          const cmd = inputField.value.trim();
+          if (cmd) {
+            term.print(`> ${cmd}`);
+            try {
+              const output = await getData(cmd);
+              term.print(output);
+            } catch (error) {
+              term.print(error.message || "JS Error!");
+            }
+            inputField.value = '';
+          }
+        }
+      });
+
+      term.print(chalk.green('Welcome to Movie Terminal! Type a movie title and press Enter.'));
+    });
+  </script>
 </body>
 </html>
